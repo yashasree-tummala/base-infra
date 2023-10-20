@@ -11,11 +11,13 @@ resource "google_service_account" "child" {
 }
 
 resource "google_project_iam_member" "child_storage_admin" {
+  project = "infra-workshop-template-94fb"
   role = "roles/storage.admin"
   member = "serviceAccount:${google_service_account.child.email}"
 }
 
 resource "google_project_iam_member" "child_kubernetes_admin" {
+  project = "infra-workshop-template-94fb"
   role = "roles/container.clusterAdmin"
   member = "serviceAccount:${google_service_account.child.email}"
 }
