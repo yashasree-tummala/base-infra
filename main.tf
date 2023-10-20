@@ -1,5 +1,8 @@
+
 provider "google" {
   project = "infra-workshop-template-94fb"
+  credentials = file("/Users/yashasree/Downloads/infra-workshop-template-94fb-437c61d3a7d6.json")
+  region = "asia-south1"
 }
 
 resource "google_service_account" "child" {
@@ -29,29 +32,17 @@ resource "google_compute_subnetwork" "subnet" {
 
 resource "google_container_cluster" "cluster" {
   name               = "my-cluster"
-  location           = "us-central1"
+  location           = "asia-south1"
   initial_node_count = 1
 }
 
 resource "google_container_node_pool" "pool" {
   name       = "my-pool"
-  location   = "us-central1"
+  location   = "asia-south1"
   cluster    = google_container_cluster.cluster.name
   node_count = 1
   node_config {
     machine_type = "n1-standard-1"
   }
-}
-
-resource "github_actions_secret" "gcp_credentials" {
-  repository = "base-infra"
-  secret_name = "GCP_CREDENTIALS"
-  plaintext_value = "<GCP_CREDENTIALS_JSON>"
-}
-
-resource "github_actions_workflow" "terraform" {
-  name = "Terraform"
-  on = "push"
-  resolves = ["terraform-apply"]
 }
 
